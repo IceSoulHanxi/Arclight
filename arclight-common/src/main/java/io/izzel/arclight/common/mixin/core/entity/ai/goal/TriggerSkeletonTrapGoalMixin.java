@@ -24,18 +24,18 @@ public class TriggerSkeletonTrapGoalMixin {
     @Shadow @Final private SkeletonHorseEntity horse;
     // @formatter:on
 
-    @Inject(method = "tick", at = @At(value = "INVOKE", ordinal = 0, target = "Lnet/minecraft/world/server/ServerWorld;func_242417_l(Lnet/minecraft/entity/Entity;)V"))
+    @Inject(method = "*", at = @At(value = "INVOKE", ordinal = 0, target = "Lnet/minecraft/world/server/ServerWorld;func_242417_l(Lnet/minecraft/entity/Entity;)V"), require = 1)
     private void arclight$thunder(CallbackInfo ci) {
         ((WorldBridge) this.horse.world).bridge$pushAddEntityReason(CreatureSpawnEvent.SpawnReason.TRAP);
     }
 
-    @Redirect(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/server/ServerWorld;addEntity(Lnet/minecraft/entity/Entity;)Z"))
+    @Redirect(method = "*", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/server/ServerWorld;addEntity(Lnet/minecraft/entity/Entity;)Z"), require = 1)
     private boolean arclight$addHorse(ServerWorld world, Entity entityIn) {
         ((ServerWorldBridge) world).bridge$strikeLightning((LightningBoltEntity) entityIn, LightningStrikeEvent.Cause.TRAP);
         return true;
     }
 
-    @Inject(method = "tick", at = @At(value = "INVOKE", ordinal = 1, target = "Lnet/minecraft/world/server/ServerWorld;func_242417_l(Lnet/minecraft/entity/Entity;)V"))
+    @Inject(method = "*", at = @At(value = "INVOKE", ordinal = 1, target = "Lnet/minecraft/world/server/ServerWorld;func_242417_l(Lnet/minecraft/entity/Entity;)V"), require = 1)
     private void arclight$jockey(CallbackInfo ci) {
         ((WorldBridge) this.horse.world).bridge$pushAddEntityReason(CreatureSpawnEvent.SpawnReason.JOCKEY);
     }
